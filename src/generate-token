@@ -16,7 +16,7 @@ function printHelp() {
   process.exit(1)
 }
 
-const personalSignStrategy = (provider, account, password) => async (data) => {
+const personalSignStrategy = (provider, account, password) => async (...data) => {
   const personal = new Personal(provider);
   return personal.sign(REY.Utils.reyHash(data), account, password);
 }
