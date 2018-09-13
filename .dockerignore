@@ -1,0 +1,7 @@
+# Ignore everything by default
+*
+
+# Allow only relevant parts of the project
+!src/
+!package.json
+!yarn.lock

@@ -1,0 +1,10 @@
+{
+  "name": "rey-cmd",
+  "version": "0.1.0-alpha.1",
+  "license": "MIT",
+  "dependencies": {
+    "read": "^1.0.7",
+    "rey-sdk": "reputation-network/rey-sdk-js#0.1.0-alpha.4",
+    "web3-eth-personal": "1.0.0-beta.36"
+  }
+}

@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+const REY = require("rey-sdk");
+
+function printHelp() {
+  const p = console.log.bind(console)
+  p(`Usage: read-app APP_ADDRESS ACCESS_TOKEN`)
+  p(`Queries the APP with the provided ACCESS_TOKEN`)
+  p(``)
+  p(`Environment variables:`)
+  p(`BLOCKCHAIN_NODE_URL        URL of the Ethereum node to connect. Default "http://localhost:8545"`)
+  p(`REGISTRY_CONTRACT_ADDRESS  The address where REY registry smart contract is deployed. Default "0x556ED3bEaF6b3dDCb1562d3F30f79bF86fFC05B9"`)
+  process.exit(1)
+}
+
+async function main() {
+  const appAddress = process.argv[2]
+  const accessToken = process.argv[3]
+  const nodeUrl = process.env.BLOCKCHAIN_NODE_URL || "http://localhost:8545"
+  const registryAddress = process.env.REGISTRY_CONTRACT_ADDRESS || "0x556ED3bEaF6b3dDCb1562d3F30f79bF86fFC05B9";
+
+  if (!appAddress || !accessToken) {
+    printHelp()
+  }
+
+  const contract = new REY.Contract(nodeUrl, registryAddress)
+  const app = new REY.App(appAddress, { contract });
+  const appParams = new REY.AppParams(REY.Utils.decodeUnsignedJwt(accessToken));
+  const data = await app.query(appParams)
+  process.stdout.write(JSON.stringify(data));
+};
+
+main()
+.catch((err) => console.error(err.message || err))
