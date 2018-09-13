@@ -3,6 +3,7 @@ const REY = require("rey-sdk")
 const URL = require("url")
 const Personal = require("web3-eth-personal")
 const passwordPrompt = require("./utils/password-prompt");
+const run = require("./utils/run");
 
 function printHelp() {
   const p = console.log.bind(console)
@@ -47,5 +48,4 @@ async function main() {
   console.log(`Manifest URL set to ${entry} for ${appAddress}`)
 }
 
-main()
-.catch((err) => console.error(err.message || err))
+run(main);

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const REY = require("rey-sdk");
+const run = require("./utils/run");
 
 function printHelp() {
   const p = console.log.bind(console)
@@ -29,5 +30,4 @@ async function main() {
   process.stdout.write(JSON.stringify(data));
 };
 
-main()
-.catch((err) => console.error(err.message || err))
+run(main);
