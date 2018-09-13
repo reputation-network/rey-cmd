@@ -14,3 +14,4 @@ COPY --from=dependencies /app/package.json .
 COPY src/ src/
 
 ENV PATH="/app/src:${PATH}"
+CMD ["/app/src/list"]
