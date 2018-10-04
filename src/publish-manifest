@@ -2,7 +2,7 @@
 const REY = require("rey-sdk")
 const URL = require("url")
 const Personal = require("web3-eth-personal")
-const passwordPrompt = require("./utils/password-prompt");
+const prompt = require("./utils/prompt");
 const run = require("./utils/run");
 
 function printHelp() {
@@ -37,7 +37,23 @@ async function main() {
     throw new Error(`App manifest url value is not a valid url`)
   }
 
-  let password = await passwordPrompt(`Password for account ${appAddress}: `)
+  const prevEntry = await registry.getEntry(appAddress);
+  if (prevEntry === appManifestUrl) {
+    console.log(`Registry entry for ${appAddress} is already ${appManifestUrl}. Skipping.`);
+    return process.exit(0);
+  }
+  if (prevEntry) {
+    console.log(`A registry entry already exists for ${appAddress} with value ${prevEntry}`);
+    console.log(`New registry entry value for ${appAddress} will be ${appManifestUrl}`);
+    try {
+      await prompt.confirmation(`Are you sure you want to overwrite entry for ${appAddress}?`)
+    } catch (e) {
+      console.log(`Registry entry value was not updated`);
+      return process.exit(1);
+    }
+  }
+
+  let password = await prompt.password(`Password for account ${appAddress}: `)
   await personal.unlockAccount(appAddress, password)
   password = null
 
