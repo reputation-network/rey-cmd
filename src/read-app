@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const REY = require("rey-sdk");
 const Personal = require("web3-eth-personal");
-const passwordPrompt = require("./utils/password-prompt");
+const prompt = require("./utils/prompt");
 const run = require("./utils/run");
 
 function printHelp() {
@@ -34,17 +34,18 @@ async function main() {
 
   const contract = new REY.Contract(nodeUrl, registryAddress)
   const app = new REY.App(appAddress, { contract });
-  const password = await passwordPrompt(`Password for account ${subjectAddress}: `, { });
+  const password = await prompt.password(`Password for account ${subjectAddress}: `);
   const signStrategy = personalSignStrategy(nodeUrl, subjectAddress, password);
 
   const expiration = (Math.floor(Date.now() / 1000) + 3600 * 1).toString(); // 1 hour
-  const appParams = await REY.App.buildAppParams({
-    version: "1.0",
+  const manifestHash = (await app.manifestEntry()).hash;
+  const appParams = await REY.Factory.buildAppParams({
     request: {
       readPermission: {
         reader: subjectAddress,
         source: appAddress,
         subject: subjectAddress,
+        manifest: manifestHash,
         expiration: expiration,
       },
       session: {
@@ -59,8 +60,8 @@ async function main() {
     extraReadPermissions: (await app.extraReadPermissions()).map((rp) =>
       Object.assign({ expiration, subject: subject.address }, rp)),
   }, {
-    subjectSignStrategy: signStrategy,
-    readerSignStrategy: signStrategy,
+    subject: signStrategy,
+    reader: signStrategy,
   });
 
   const data = await app.query(appParams)
