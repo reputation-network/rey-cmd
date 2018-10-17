@@ -5,9 +5,9 @@ const prompt = require("./utils/prompt");
 const run = require("./utils/run");
 
 function printHelp() {
-  console.log('Usage: read-app APP_ADDRESS SUBJECT_ADDRESS')
-  console.log('Queries the APP with a specific SUBJECT_ADDRESS')
-  console.log('For this command to work is necessary that both APP_ADDRESS and SUBJECT_ADDRESS are accounts handled by the blockchain node')
+  console.log('Usage: read-app APP_ADDRESS SUBJECT_ADDRESS VERIFIER_ADDRESS')
+  console.log('Queries an APP with a specific SUBJECT_ADDRESS using a given VERIFIER');
+  console.log('For this command to work, it is necessary that both APP_ADDRESS and SUBJECT_ADDRESS are accounts handled by the blockchain node');
   console.log()
   console.log('Environment variables:')
   console.log('BLOCKCHAIN_NODE_URL        URL of the Ethereum node to connect. Default "http://localhost:8545"')
@@ -24,6 +24,7 @@ const personalSignStrategy = (provider, account, password) => async (...data) =>
 async function main() {
   const appAddress = process.argv[2]
   const subjectAddress = process.argv[3]
+  const verifierAddress = process.argv[3]
   const nodeUrl = process.env.BLOCKCHAIN_NODE_URL || "http://localhost:8545"
   const registryAddress = process.env.REGISTRY_CONTRACT_ADDRESS || "0x556ED3bEaF6b3dDCb1562d3F30f79bF86fFC05B9";
 
@@ -32,7 +33,7 @@ async function main() {
   }
 
 
-  const contract = new REY.Contract(nodeUrl, registryAddress)
+  const contract = REY.Contract(nodeUrl, registryAddress)
   const app = new REY.App(appAddress, { contract });
   const password = await prompt.password(`Password for account ${subjectAddress}: `);
   const signStrategy = personalSignStrategy(nodeUrl, subjectAddress, password);
@@ -50,7 +51,7 @@ async function main() {
       },
       session: {
         subject: subjectAddress,
-        verifier: subjectAddress,
+        verifier: verifierAddress,
         fee: "0",
         nonce: Date.now().toString(),
       },
