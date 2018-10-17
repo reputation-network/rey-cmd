@@ -1009,9 +1009,9 @@ request@^2.79.0:
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
-rey-sdk@reputation-network/rey-sdk-js#v0.1.0-alpha.16:
-  version "0.1.0-alpha.16"
-  resolved "https://codeload.github.com/reputation-network/rey-sdk-js/tar.gz/7c397ea2d998ee19919855812457e832eee20fd2"
+rey-sdk@reputation-network/rey-sdk-js#v0.1.0-alpha.17:
+  version "0.1.0-alpha.17"
+  resolved "https://codeload.github.com/reputation-network/rey-sdk-js/tar.gz/c64449e380517ba3efee85a5938d798f56fc6bc6"
   dependencies:
     "@types/ethereumjs-util" "^5.2.0"
     "@types/webpack" "^4.4.9"
