@@ -1154,9 +1154,9 @@ request@^2.79.0:
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
-rey-sdk@reputation-network/rey-sdk-js#v0.1.0-alpha.26:
-  version "0.1.0-alpha.26"
-  resolved "https://codeload.github.com/reputation-network/rey-sdk-js/tar.gz/efd34e4775162b9f2021b4ec9350fd123922a949"
+rey-sdk@reputation-network/rey-sdk-js#v0.1.0-alpha.27:
+  version "0.1.0-alpha.27"
+  resolved "https://codeload.github.com/reputation-network/rey-sdk-js/tar.gz/a2019408051a6c7c9c492e56c3d4f2d43e27263a"
   dependencies:
     "@types/node-rsa" "^0.4.3"
     axios "^0.18.0"
