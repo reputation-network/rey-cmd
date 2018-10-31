@@ -24,7 +24,7 @@ const personalSignStrategy = (provider, account, password) => async (...data) =>
 async function main() {
   const appAddress = process.argv[2]
   const subjectAddress = process.argv[3]
-  const verifierAddress = process.argv[3]
+  const verifierAddress = process.argv[4]
   const nodeUrl = process.env.BLOCKCHAIN_NODE_URL || "http://localhost:8545"
   const registryAddress = process.env.REGISTRY_CONTRACT_ADDRESS || "0x556ED3bEaF6b3dDCb1562d3F30f79bF86fFC05B9";
 
@@ -40,6 +40,8 @@ async function main() {
 
   const expiration = (Math.floor(Date.now() / 1000) + 3600 * 1).toString(); // 1 hour
   const manifestHash = (await app.manifestEntry()).hash;
+  const encryptionKey = new REY.Utils.EncryptionKey();
+  await encryptionKey.createPair();
   const appParams = await REY.Factory.buildAppParams({
     request: {
       readPermission: {
@@ -60,6 +62,7 @@ async function main() {
     },
     extraReadPermissions: (await app.extraReadPermissions()).map((rp) =>
       Object.assign({ expiration, subject: subject.address }, rp)),
+    encryptionKey: encryptionKey,
   }, {
     subject: signStrategy,
     reader: signStrategy,
