@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+const Personal= require("web3-eth-personal");
+const prompt = require("./utils/prompt");
+const run = require("./utils/run");
+
+function printHelp() {
+  console.log('Usage: add-account PRIVATE_KEY')
+  console.log('Adds an account to the node, given its PRIVATE_KEY');
+  console.log('For this command to work, your node needs the personal API available on RPC');
+  console.log()
+  console.log('Environment variables:')
+  console.log('BLOCKCHAIN_NODE_URL        URL of the Ethereum node to connect. Default "http://localhost:8545"')
+  process.exit(1)
+}
+
+async function main() {
+  const privateKey = process.argv[2]
+  const nodeUrl = process.env.BLOCKCHAIN_NODE_URL || "http://localhost:8545"
+
+  if (!privateKey) { printHelp(); }
+
+  const personal = new Personal(nodeUrl);
+  const password = await prompt.password("Create a password for your account: ");
+
+  process.stdout.write(await personal.importRawKey(privateKey, password));
+};
+
+run(main);
