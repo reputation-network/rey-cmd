@@ -58,7 +58,7 @@ async function main() {
         nonce: Date.now().toString(),
       },
       value: "0",
-      counter: "1",
+      counter: Date.now().toString(),
     },
     extraReadPermissions: (await app.extraReadPermissions()).map((rp) =>
       Object.assign({ expiration, subject: subject.address }, rp)),
